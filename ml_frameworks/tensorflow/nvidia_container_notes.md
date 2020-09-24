@@ -14,7 +14,7 @@ to a singularity command by doing this:
 singularity build tensorflow-20.08-tf2-py3.simg docker://nvcr.io/nvidia/tensorflow:20.08-tf2-py3
 ```
 
-You'll need to run this command on a Theta login node which has network access (`thetaloginX`).
+You'll need to run this command on a Theta login node which has network access (`thetaloginX`).  The containers from August, 2020, are also all available converted to singularity here: `/lus/theta-fs0/projects/datascience/thetaGPU/containers/`
 
 ## Running on ThetaGPU
 
