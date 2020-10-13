@@ -1,13 +1,22 @@
 #!/bin/bash
 
 # As of Oct 13 2020
-# This script will install tensorflow from scratch on ThetaGPU
-# 1 - Copy this script into a folder on ThetaGPU
+# This script will install tensorflow and horovod from scratch on ThetaGPU
+# 1 - Grab worker node interactively for 120 min
 # 2 - Run 'bash install_tensorflow.sh'
-# 3 - wait for it to complete
+# 3 - script installs everything down in $PWD/tf-install
+# 4 - wait for it to complet
 
+# Tensorflow source and version
 TF_REPO_URL=https://github.com/tensorflow/tensorflow.git
 TF_REPO_TAG="v2.3.1"
+
+# Horovod source and version
+HOROVOD_REPO_URL=https://github.com/uber/horovod.git
+HOROVOD_REPO_TAG="v0.20.3"
+
+# MPI source on ThetaGPU
+MPI=/lus/theta-fs0/software/thetagpu/openmpi-4.0.5
 
 
 # CUDA path and version information
@@ -15,20 +24,23 @@ CUDA_VERSION_MAJOR=11
 CUDA_VERSION_MINOR=0
 CUDA_VERSION=$CUDA_VERSION_MAJOR.$CUDA_VERSION_MINOR
 CUDA_BASE=/usr/local/cuda-$CUDA_VERSION
+
 CUDNN_VERSION_MAJOR=8
 CUDNN_VERSION_MINOR=0.4.30
 CUDNN_VERSION=$CUDNN_VERSION_MAJOR.$CUDNN_VERSION_MINOR
 CUDNN_BASE=/lus/theta-fs0/projects/datascience/parton/cuda/cudnn-$CUDA_VERSION-linux-x64-v$CUDNN_VERSION
+
 NCCL_VERSION_MAJOR=2
 NCCL_VERSION_MINOR=7.8-1
 NCCL_VERSION=$NCCL_VERSION_MAJOR.$NCCL_VERSION_MINOR
 NCCL_BASE=/lus/theta-fs0/projects/datascience/parton/cuda/nccl_$NCCL_VERSION+cuda${CUDA_VERSION}_x86_64
+
 TENSORRT_VERSION_MAJOR=7
 TENSORRT_VERSION_MINOR=2.0.14
 TENSORRT_VERSION=$TENSORRT_VERSION_MAJOR.$TENSORRT_VERSION_MINOR
 TENSORRT_BASE=/lus/theta-fs0/projects/datascience/parton/cuda/TensorRT-$TENSORRT_VERSION.Ubuntu-18.04.x86_64-gnu.cuda-$CUDA_VERSION.cudnn$CUDNN_VERSION_MAJOR.0
 
-# Tensorflow Config flags
+# Tensorflow Config flags (for ./configure run)
 export TF_CUDA_COMPUTE_CAPABILITIES=8.0
 export TF_CUDA_VERSION=$CUDA_VERSION_MAJOR
 export TF_CUDNN_VERSION=$CUDNN_VERSION_MAJOR
@@ -51,9 +63,12 @@ export GCC_HOST_COMPILER_PATH=$(which gcc)
 export CC_OPT_FLAGS="-march=native -Wno-sign-compare"
 export TF_SET_ANDROID_WORKSPACE=0
 
+# get the folder where this script is living
 THISDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -LP )
+# set install path
 TF_INSTALL_BASE_DIR=$THISDIR/tf-intall
 
+# confirm install path
 echo Installing tensorflow into $TF_INSTALL_BASE_DIR
 read -p "Are you sure? " -n 1 -r
 echo  
@@ -66,15 +81,18 @@ fi
 
 set -e
 
+# needed for outside communication on ThetaGPU
 export https_proxy=http://proxy.tmi.alcf.anl.gov:3128
 export http_proxy=http://proxy.tmi.alcf.anl.gov:3128
 
+# set Conda installation folder and where downloaded content will stay
 CONDA_PREFIX_PATH=$TF_INSTALL_BASE_DIR/mconda3
 DOWNLOAD_PATH=$TF_INSTALL_BASE_DIR/DOWNLOADS
 
 mkdir -p $CONDA_PREFIX_PATH
 mkdir -p $DOWNLOAD_PATH
 
+# Download and install conda for a base python installation
 CONDAVER=latest
 CONDA_DOWNLOAD_URL=https://repo.continuum.io/miniconda
 CONDA_INSTALL_SH=Miniconda3-$CONDAVER-Linux-x86_64.sh
@@ -136,10 +154,13 @@ atexit.register(save_history)
 del os, atexit, rlcompleter, save_history, historyPath
 EOF
 
+# move to base install directory
 cd $TF_INSTALL_BASE_DIR
 
+# setup conda environment
 source $CONDA_PREFIX_PATH/setup.sh
 
+# re-add proxys
 export https_proxy=http://proxy.tmi.alcf.anl.gov:3128
 export http_proxy=http://proxy.tmi.alcf.anl.gov:3128
 
@@ -152,7 +173,6 @@ conda install -y cmake zip unzip
 
 echo Clone Tensorflow
 cd $TF_INSTALL_BASE_DIR
-#git config --global http.proxy http://proxy.tmi.alcf.anl.gov:3128
 git clone $TF_REPO_URL
 cd tensorflow
 echo Checkout Tensorflow tag $TF_REPO_TAG
@@ -190,4 +210,24 @@ echo Run wheel building
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 echo Install Tensorflow
 pip install /tmp/tensorflow_pkg/tensorflow-$(echo $TF_REPO_TAG | sed "s/v//g")-cp38-cp38-linux_x86_64.whl
+
+cd $TF_INSTALL_BASE_DIR
+
+echo Clone Horovod $HOROVOD_REPO_TAG git repo
+
+git clone --recursive $HOROVOD_REPO_URL 
+cd horovod
+git checkout $HOROVOD_REPO_TAG
+
+echo Build Horovod using MPI from $MPI
+export LD_LIBRARY_PATH=$MPI/lib:$LD_LIBRARY_PATH
+export PATH=$MPI/bin:$PATH
+
+HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmake) HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 CC=$MPI/bin/mpicc CXX=$MPI/bin/mpicxx python setup.py build_ext
+
+echo Install Horovod
+HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmake) HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 CC=$MPI/bin/mpicc CXX=$MPI/bin/mpicxx python setup.py install
+
+echo Cleaning up
+rm -rf $DOWNLOAD_PATH
 
