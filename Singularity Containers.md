@@ -20,6 +20,8 @@ For your convienience, we've converted these containers to singularity and they 
 /lus/theta-fs0/software/thetagpu/nvidia-containers/
 ```
 
+To extend the python libraries in these containers, please see https://github.com/argonne-lcf/ThetaGPU-Docs/blob/master/building_python_packages.md
+
 For running with these containers, please see [NEEDS LINK]
 
 For issues with these containers, please email support@alcf.anl.gov .
