@@ -228,6 +228,9 @@ HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmak
 echo Install Horovod
 HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmake) HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 CC=$MPI/bin/mpicc CXX=$MPI/bin/mpicxx python setup.py install
 
+echo Install Tensorboard profiler plugin
+pip install tensorboard_plugin_profile
+
 echo Cleaning up
 rm -rf $DOWNLOAD_PATH
 
