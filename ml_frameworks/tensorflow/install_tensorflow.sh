@@ -113,8 +113,8 @@ eval "\$(\$CONDA_DIR/bin/conda shell.bash hook)"
 export https_proxy=http://proxy.tmi.alcf.anl.gov:3128
 export http_proxy=http://proxy.tmi.alcf.anl.gov:3128
 
-export LD_LIBRARY_PATH=$CUDA_BASE/lib:$CUDNN_BASE/lib:$NCCL_BASE/lib:$TENSORRT_BASE/lib
-
+export LD_LIBRARY_PATH=$MPI/lib:$CUDA_BASE/lib64:$CUDNN_BASE/lib64:$NCCL_BASE/lib:$TENSORRT_BASE/lib
+export PATH=$MPI/bin:$PATH
 EOF
 
 # create custom pythonstart in local area to deal with python readlines error
@@ -209,7 +209,7 @@ HOME=$DOWNLOAD_PATH bazel build --config=cuda //tensorflow/tools/pip_package:bui
 echo Run wheel building
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
 echo Install Tensorflow
-pip install /tmp/tensorflow_pkg/tensorflow-$(echo $TF_REPO_TAG | sed "s/v//g")-cp38-cp38-linux_x86_64.whl
+pip install $(find /tmp/tensorflow_pkg/ -name "*.whl" -type f)
 
 cd $TF_INSTALL_BASE_DIR
 
