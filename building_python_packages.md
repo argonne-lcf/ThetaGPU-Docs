@@ -14,6 +14,12 @@ export VENV_LOCATION=/path/to/virtualenv # replace this with your path!
 python -m venv --system-site-packages $VENV_LOCATION
 ```
 
+Note: sometimes, the `venv` package is available and if not, you can try `python -m virtualenv`.  If neither are available, you can install it in your user directory:
+```bash
+pip install --user virtualenv
+```
+and it should work.
+
 Next time you log in, you'll have to start the container, and then run `source $VENV_LOCATION/bin/activate` to re-enable your installed packages.
 
 
