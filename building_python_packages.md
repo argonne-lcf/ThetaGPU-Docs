@@ -10,7 +10,7 @@ singularity exec -B /lus:/lus --nv /lus/theta-fs0/projects/datascience/thetaGPU/
 
 From here, you can create a virtual env for installation:
 ```bash
-export $VENV_LOCATION=/path/to/virtualenv # replace this with your path!
+export VENV_LOCATION=/path/to/virtualenv # replace this with your path!
 python -m venv --system-site-packages $VENV_LOCATION
 ```
 
