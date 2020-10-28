@@ -114,8 +114,8 @@ eval "\$(\$CONDA_DIR/bin/conda shell.bash hook)"
 export https_proxy=http://proxy.tmi.alcf.anl.gov:3128
 export http_proxy=http://proxy.tmi.alcf.anl.gov:3128
 
-export LD_LIBRARY_PATH=$MPI/lib:$CUDA_BASE/lib64:$CUDNN_BASE/lib64:$NCCL_BASE/lib:$TENSORRT_BASE/lib
-export PATH=$MPI/bin:$PATH
+export LD_LIBRARY_PATH=$MPI/lib:$CUDA_BASE/lib64:$CUDNN_BASE/lib64:$NCCL_BASE/lib:$TENSORRT_BASE/lib:\$LD_LIBRARY_PATH
+export PATH=$MPI/bin:\$PATH
 EOF
 
 # create custom pythonstart in local area to deal with python readlines error
