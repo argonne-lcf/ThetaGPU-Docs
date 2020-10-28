@@ -9,7 +9,7 @@
 
 # Tensorflow source and version
 TF_REPO_URL=https://github.com/tensorflow/tensorflow.git
-TF_REPO_TAG="v2.3.1"
+TF_REPO_TAG="master"
 
 # Horovod source and version
 HOROVOD_REPO_URL=https://github.com/uber/horovod.git
@@ -67,6 +67,7 @@ export TF_SET_ANDROID_WORKSPACE=0
 THISDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -LP )
 # set install path
 TF_INSTALL_BASE_DIR=$THISDIR/tf-intall
+WHEEL_DIR=$TF_INSTALL_BASE_DIR/wheels
 
 # confirm install path
 echo Installing tensorflow into $TF_INSTALL_BASE_DIR
@@ -194,7 +195,7 @@ export PATH=$PATH:/$BAZEL_INSTALL_PATH/bin
 cd $TF_INSTALL_BASE_DIR
 
 echo Install Tensorflow Dependencies
-pip install -U pip six 'numpy<1.19.0' wheel setuptools mock 'future>=0.17.1' 'gast==0.3.3' typing_extensions
+pip install -U pip six 'numpy<1.19.0' wheel setuptools mock 'future>=0.17.1' 'gast==0.3.3' typing_extensions portpicker
 pip install -U keras_applications --no-deps
 pip install -U keras_preprocessing --no-deps
 
@@ -207,9 +208,9 @@ export PYTHON_LIB_PATH=$(python -c 'import site; print(site.getsitepackages()[0]
 echo Bazel Build Tensorflow 
 HOME=$DOWNLOAD_PATH bazel build --config=cuda //tensorflow/tools/pip_package:build_pip_package
 echo Run wheel building
-./bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
+./bazel-bin/tensorflow/tools/pip_package/build_pip_package $WHEEL_DIR
 echo Install Tensorflow
-pip install $(find /tmp/tensorflow_pkg/ -name "*.whl" -type f)
+pip install $(find $WHEEL_DIR/ -name "tensorflow*.whl" -type f)
 
 cd $TF_INSTALL_BASE_DIR
 
@@ -223,6 +224,10 @@ echo Build Horovod using MPI from $MPI
 export LD_LIBRARY_PATH=$MPI/lib:$LD_LIBRARY_PATH
 export PATH=$MPI/bin:$PATH
 
+HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmake) HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 CC=$MPI/bin/mpicc CXX=$MPI/bin/mpicxx python setup.py bdist_wheel 
+HVD_WHL=$(find dist/ -name "horovod*.whl" -type f)
+cp $HVD_WHL $WHEEL_DIR/
+python setup.py clean
 HOROVOD_NCCL_LINK=SHARED HOROVOD_NCCL_HOME=$NCCL_BASE HOROVOD_CMAKE=$(which cmake) HOROVOD_GPU_OPERATIONS=NCCL HOROVOD_WITH_TENSORFLOW=1 HOROVOD_WITHOUT_PYTORCH=1 HOROVOD_WITHOUT_MXNET=1 CC=$MPI/bin/mpicc CXX=$MPI/bin/mpicxx python setup.py build_ext
 
 echo Install Horovod
