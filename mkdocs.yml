@@ -1,0 +1,13 @@
+site_name: Theta GPU Documentation
+nav:
+  - Home: index.md
+  - GPU Monitoring: GPU Monitoring.md
+  - Building Python Packages: building_python_packages.md
+  - MPI: mpi.md
+  - Singularity Containers: Singularity Containers.md
+  - DL Frameworks:
+    - Tensorflow:
+      - Container Notes: ml_frameworks/tensorflow/nvidia_container_notes.md
+      - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
+theme: readthedocs
+docs_dir: 'docs/'

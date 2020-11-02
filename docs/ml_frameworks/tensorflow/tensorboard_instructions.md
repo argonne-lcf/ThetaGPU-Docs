@@ -24,3 +24,4 @@ ssh thetagpuNN
 
 # now run tensorboard
 tensorboard --logdir </path/to/logs> --port $PORT3 --bind_all
+```
