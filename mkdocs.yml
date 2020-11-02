@@ -11,3 +11,4 @@ nav:
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
 theme: readthedocs
 docs_dir: 'doc_staging/'
+site_dir: 'docs/'
