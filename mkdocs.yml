@@ -10,4 +10,4 @@ nav:
       - Container Notes: ml_frameworks/tensorflow/nvidia_container_notes.md
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
 theme: readthedocs
-docs_dir: 'docs/'
+docs_dir: 'doc_staging/'

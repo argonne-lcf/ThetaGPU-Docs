@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../../../img/favicon.ico">
+  <title>Container Notes - Theta GPU Documentation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../../../css/theme.css" />
+  <link rel="stylesheet" href="../../../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Container Notes";
+    var mkdocs_page_input_path = "ml_frameworks/tensorflow/nvidia_container_notes.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="../../.." class="icon icon-home"> Theta GPU Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../GPU%20Monitoring/">GPU Monitoring</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../building_python_packages/">Building Python Packages</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../mpi/">MPI</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../../Singularity%20Containers/">Singularity Containers</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">DL Frameworks</span></p>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="#">Tensorflow</a>
+    <ul class="current">
+                <li class="toctree-l2 current"><a class="reference internal current" href="./">Container Notes</a>
+    <ul class="current">
+    <li class="toctree-l3"><a class="reference internal" href="#getting-the-container">Getting the container</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#running-on-thetagpu">Running on ThetaGPU</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#running-tensorflow-2-with-horovod-on-thetagpu">Running Tensorflow-2 with Horovod on ThetaGPU</a>
+    </li>
+    </ul>
+                </li>
+                <li class="toctree-l2"><a class="reference internal" href="../tensorboard_instructions/">Tensorboard</a>
+                </li>
+    </ul>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../..">Theta GPU Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Tensorflow &raquo;</li>
+        
+      
+        
+          <li>DL Frameworks &raquo;</li>
+        
+      
+    
+    <li>Container Notes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="nvidia-container-notes">NVidia Container Notes</h1>
+<h2 id="getting-the-container">Getting the container</h2>
+<p>To get NVidia docker containers which have the latest CUDA and Tensorflow installed, go to <a href="https://ngc.nvidia.com">NVidia NGC</a>, create an account, search for <code>Tensorflow</code>. Notice there are containers tagged with <code>tf1</code> and <code>tf2</code>. The page tells you how to select the right one.</p>
+<p>You can convert the command at the top, for instance:</p>
+<pre><code class="language-bash">docker pull nvcr.io/nvidia/tensorflow:20.08-tf2-py3
+</code></pre>
+<p>to a singularity command by doing this:</p>
+<pre><code class="language-bash">singularity build tensorflow-20.08-tf2-py3.simg docker://nvcr.io/nvidia/tensorflow:20.08-tf2-py3
+</code></pre>
+<p>You'll need to run this command on a Theta login node which has network access (<code>thetaloginX</code>).  The containers from August, 2020, are also all available converted to singularity here: <code>/lus/theta-fs0/projects/datascience/thetaGPU/containers/</code></p>
+<h2 id="running-on-thetagpu">Running on ThetaGPU</h2>
+<p>After logging into ThetaGPU with <code>ssh thetagpusn1</code>, one can submit job using the container one a single node by doing:
+<code>qsub -n 1 -t 10 -A &lt;project-name&gt; submit.sh</code>
+where <code>submit.sh</code> contians the following bash scripting:</p>
+<pre><code class="language-bash">#!/bin/bash
+CONTAINER=$HOME/tensorflow-20.08-tf2-py3.simg
+
+singularity exec --nv $CONTAINER python /usr/local/lib/python3.6/dist-packages/tensorflow/python/debug/examples/debug_mnist.py
+</code></pre>
+<p>make sure to make the script executable with <code>chmod a+x submit.sh</code>.</p>
+<p>The log file <code>&lt;cobalt-jobid&gt;.output</code> should contain some text like this:</p>
+<pre><code class="language-bash">Accuracy at step 0: 0.2159
+Accuracy at step 1: 0.098
+Accuracy at step 2: 0.098
+Accuracy at step 3: 0.098
+Accuracy at step 4: 0.098
+Accuracy at step 5: 0.098
+Accuracy at step 6: 0.098
+Accuracy at step 7: 0.098
+Accuracy at step 8: 0.098
+Accuracy at step 9: 0.098
+</code></pre>
+<p>The numbers may be different.</p>
+<h2 id="running-tensorflow-2-with-horovod-on-thetagpu">Running Tensorflow-2 with Horovod on ThetaGPU</h2>
+<p>To run on ThetaGPU with MPI you can do the follow test:</p>
+<pre><code class="language-bash">git clone git@github.com:jtchilders/tensorflow_skeleton.git
+cd tensorflow_skeleton
+qsub -n 2 -t 20 -A &lt;project-name&gt; submit_scripts/thetagpu_mnist.sh
+</code></pre>
+<p>You can inspect the submit script for details on how the job is constructed.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tensorboard_instructions/" class="btn btn-neutral float-right" title="Tensorboard">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../../Singularity%20Containers/" class="btn btn-neutral" title="Singularity Containers"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../../Singularity%20Containers/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../tensorboard_instructions/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../../..';</script>
+    <script src="../../../js/theme.js" defer></script>
+      <script src="../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
