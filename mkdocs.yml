@@ -9,6 +9,35 @@ nav:
     - Tensorflow:
       - Container Notes: ml_frameworks/tensorflow/nvidia_container_notes.md
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
-theme: readthedocs
+
 docs_dir: 'doc_staging/'
 site_dir: 'docs/'
+
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'teal'
+    accent: 'amber'
+  features:
+    - tabs
+    - instant
+  icon: 
+    logo: material/cloud
+
+markdown_extensions:
+  - admonition
+  - codehilite
+
+
+repo_name: 'argonne-lcf/ThetaGPU-Docs'
+repo_url: 'https://github.com/argonne-lcf/ThetaGPU-Docs'
+
+extra:
+  social:
+    - icon: 'fontawesome/brands/github-alt'
+      link: 'https://github.com/argonne-lcf/ThetaGPU-Docs'
+
+plugins:
+  - search
+
