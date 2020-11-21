@@ -1,6 +1,5 @@
 # ThetaGPU
 
----
 
 ## Machine Overview
 
@@ -13,10 +12,11 @@ A 15-terabyte solid-state drive offers up to 25 gigabits per second in bandwidth
 ## Login Nodes
 
 The [Theta login nodes](https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview) will be the intended method to access ThetaGPU.
-At first, Cobalt jobs cannot be submitted from the theta login nodes to run on the GPU nodes; until that is supported, users will need to login to the ThetaGPU service nodes (`thetagpusn1` or `thetagpusn2`) from the Theta login nodes, and from there Cobalt jobs can be submitted to run on the GPU nodes.
 
+At first, Cobalt jobs cannot be submitted from the theta login nodes to run on the GPU nodes; until that is supported, users will need to login to the ThetaGPU service nodes (`thetagpusn1` or `thetagpusn2`) from the Theta login nodes, from there, Cobalt jobs can be submitted to run on the GPU nodes.
 
 **Table 1: Theta Machine Overview**
+
 | ThetaGPU Machine Specs    |                   |
 |---------------------------|-------------------|
 | Architecture              | NVIDIA DGX A100   |
@@ -29,6 +29,7 @@ At first, Cobalt jobs cannot be submitted from the theta login nodes to run on t
 
 
 **Table 2: ThetaGPU Compute Nodes Overview**
+
 | COMPONENT                | PER NODE | AGGREGATE |
 |--------------------------|----------|-----------|
 | AMD Rome 64-core CPU     | 2        | 48        |
