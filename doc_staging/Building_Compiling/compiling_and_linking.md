@@ -1,7 +1,5 @@
 # Compiling and Linking
 
----
-
 ThetaGPU basically has AMD processors on the service nodes (thetagpusn1,2) and AMD processors and NVIDIA A100 GPUs on the compute nodes [see overview page]. The service nodes can be used to create containers and launch jobs, and eventually to use as a cross-compiling environment for compute nodes. Until the cross-compiling environment is set up, the compute nodes will have to be used for compiling. This can be done by using an interactive Cobalt job (via qsub -I), or until we have reserved or added a dedicated build node.
 
 The default programming environment on the ThetaGPU compute nodes is the GNU compiler tools coupled with NVIDIA’s CUDA toolkit. 
