@@ -37,7 +37,7 @@ Initially, we are relaxing our node restrictions to encourage early users.  Plea
 Here are the initial queue limits:
 
  - `MinTime` is 5 minutes
- - `MaxTime` is 24 hours
+ - `MaxTime` is 12 hours
  - `MaxRunning` will be 2 full nodes or 16 individual GPUs
 
 ### Queue Restrictions
