@@ -13,7 +13,7 @@ A 15-terabyte solid-state drive offers up to 25 gigabits per second in bandwidth
 
 The [Theta login nodes](https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview) will be the intended method to access ThetaGPU.
 
-At first, Cobalt jobs cannot be submitted from the theta login nodes to run on the GPU nodes; until that is supported, users will need to login to the ThetaGPU service nodes (`thetagpusn1` or `thetagpusn2`) from the Theta login nodes, from there, Cobalt jobs can be submitted to run on the GPU nodes.
+At first, Cobalt jobs cannot be submitted from the theta login nodes to run on the GPU nodes; until that is supported, users will need to login to the ThetaGPU service nodes (`ssh thetagpusn1` or `ssh thetagpusn2`) from the Theta login nodes, from there, Cobalt jobs can be submitted to run on the GPU nodes.
 
 **Table 1: Theta Machine Overview**
 
