@@ -14,6 +14,7 @@ nav:
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
     - PyTorch:
       - Running with Conda: ml_frameworks/pytorch/running_with_conda.md
+    - Data Parallel Training: data_parallel_training.md
   - Building and Compiling: 
     - Python/C++ code interoperability: Building_Compiling/README.md
     - Compiling and Linking: Building_Compiling/compiling_and_linking.md
