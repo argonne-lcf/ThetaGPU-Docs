@@ -10,7 +10,8 @@ nav:
       - Running with Singularity: ml_frameworks/tensorflow/nvidia_container_notes.md
       - Running with Conda: ml_frameworks/tensorflow/running_with_conda.md
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
-
+    - Data parallel training: data_parallel_training.md
+      
 docs_dir: 'doc_staging/'
 site_dir: 'docs/'
 
