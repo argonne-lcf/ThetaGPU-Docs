@@ -7,6 +7,7 @@ nav:
   - Building Python Packages: building_python_packages.md
   - MPI: mpi.md
   - Singularity Containers: Singularity Containers.md
+  - Jupyter: jupyter.md
   - DL Frameworks:
     - Tensorflow:
       - Running with Singularity: ml_frameworks/tensorflow/nvidia_container_notes.md
