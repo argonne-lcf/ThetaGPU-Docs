@@ -12,7 +12,7 @@ These are the steps to build code that has Python/C++ code interoperability.
    qsub -n 1 -q default -A datascience -I -t 1:00:00
    ```
 
-Following this, we need to execute a few commands to get setup with an appropriately optimized TensorFlow. These are:
+   Following this, we need to execute a few commands to get setup with an appropriately optimized TensorFlow. These are:
 
 3. Activate the TensorFlow 2.2 Singularity container:
    ```
