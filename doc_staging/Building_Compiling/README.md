@@ -1,10 +1,11 @@
 # Description
 
 These are the steps to build code that has Python/C++ code interoperability.
+
 1. Login to a ThetaGPU head node
-```
-ssh thetagpusn1
-```
+   ```
+   ssh thetagpusn1
+   ```
 
 2. Request an interactive session on an A100 GPU
    ```
