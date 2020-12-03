@@ -16,7 +16,7 @@ nav:
     - PyTorch:
       - Running with Conda: ml_frameworks/pytorch/running_with_conda.md
     - Data Parallel Training: data_parallel_training.md
-  - Building and Compiling: 
+  - Building and Compiling:
     - Python/C++ code interoperability: Building_Compiling/README.md
     - Compiling and Linking: Building_Compiling/compiling_and_linking.md
 
@@ -32,13 +32,13 @@ theme:
   features:
     - tabs
     - instant
-  icon: 
+  icon:
     logo: material/cloud
 
 markdown_extensions:
   - admonition
   - codehilite
-
+  - pymdownx.superfences
 
 repo_name: 'argonne-lcf/ThetaGPU-Docs'
 repo_url: 'https://github.com/argonne-lcf/ThetaGPU-Docs'
@@ -50,4 +50,3 @@ extra:
 
 plugins:
   - search
-
