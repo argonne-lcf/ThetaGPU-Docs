@@ -20,8 +20,8 @@ These are the steps to build code that has Python/C++ code interoperability.
 
 4. Setup access to the internet
    ```
-   export HTTP_PROXY=http://theta-proxy.tmi.alcf.anl.gov:3128
-   export HTTPS_PROXY=https://theta-proxy.tmi.alcf.anl.gov:3128
+   export http_proxy=http://theta-proxy.tmi.alcf.anl.gov:3128
+   export https_proxy=https://theta-proxy.tmi.alcf.anl.gov:3128
    ```
    
 5. Now that we can access the internet, we need to set up a virtual environment in Python (these commands should only be run the first time)
