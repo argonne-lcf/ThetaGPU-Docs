@@ -6,10 +6,11 @@ nav:
   - GPU Monitoring: GPU Monitoring.md
   - Building Python Packages: building_python_packages.md
   - MPI: mpi.md
+  - Dask-MPI: daskmpi/README.md
   - Singularity Containers: Singularity Containers.md
   - Jupyter: jupyter.md
   - DL Frameworks:
-    - Tensorflow:
+    - TensorFlow:
       - Running with Singularity: ml_frameworks/tensorflow/nvidia_container_notes.md
       - Running with Conda: ml_frameworks/tensorflow/running_with_conda.md
       - Tensorboard: ml_frameworks/tensorflow/tensorboard_instructions.md
@@ -27,8 +28,9 @@ theme:
   name: 'material'
   language: 'en'
   palette:
-    primary: 'teal'
+    primary: 'indigo'
     accent: 'amber'
+    scheme: 'preference'
   features:
     - tabs
     - instant
