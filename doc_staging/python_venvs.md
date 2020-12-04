@@ -20,7 +20,7 @@ source my_env/bin/activate
 
 ## Extending with conda
 If you prefer to use `conda` to manage your environment, refer to the [conda
-environments page](running_with_conda.md#installing-packages) for instructions on
+environments page](ml_frameworks/tensorflow/running_with_conda.md) for instructions on
 cloning the base environment.
 
 ## Combining virtualenvs with containers
