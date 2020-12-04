@@ -18,3 +18,5 @@ cd hps_demo/hps_demo
 deephyper new-problem hps polynome2
 deephyper hps ambs --problem hps_demo.polynome2.problem.Problem --run hps_demo.polynome2.model_run.run --evaluator subprocess
 ```
+
+For more details refer to the [deephyper documentation](https://deephyper.readthedocs.io/en/latest/index.html).
