@@ -21,6 +21,8 @@ nav:
   - Building and Compiling:
     - Python/C++ code interoperability: Building_Compiling/README.md
     - Compiling and Linking: Building_Compiling/compiling_and_linking.md
+  - Balsam: balsam.md
+  - DeepHyper: deephyper.md
 
 docs_dir: 'doc_staging/'
 site_dir: 'docs/'
