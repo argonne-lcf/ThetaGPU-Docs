@@ -8,12 +8,11 @@ Given A100 and CUDA 11 are very new, we have a build of the master branch of Ten
 
 Users can utilize them by running this setup script:
 ```bash
-source /lus/theta-fs0/software/thetagpu/conda/tf_master/latest/mconda3/setup.sh
+source /lus/theta-fs0/software/thetagpu/conda/tf_master/2020-11-11/mconda3/setup.sh
 ```
-This will setup a conda environment with a recent "from scratch" build of the Tensorflow repository on the master branch. The `latest` in the path is a symlink to a directory named by date that will be used to track our local builds. Per the writing of this documetation the only build uses `latest` points to `2020-11`. In the future, there will be newer builds available in that directory `/lus/theta-fs0/software/thetagpu/conda/tf_master/` so check there for newer installs and run the respective `mconda3/setup.sh` script to use it. If you find things break since the last time you ran, it may be because `latest` is now pointing at a newer Tensorflow build.
+This will setup a conda environment with a recent "from scratch" build of the Tensorflow repository on the master branch. The `2020-11-11` in the path can be substituted for other dates found in the directory. Per the writing of this documetation the latest installation was `2021-01-08`. In the future, there will be newer builds available in that directory `/lus/theta-fs0/software/thetagpu/conda/tf_master/` so check there for newer installs and run the respective `mconda3/setup.sh` script to use it. The build directories will also include wheels for tensorflow and horovod in `/lus/theta-fs0/software/thetagpu/conda/tf_master/<date>/wheels` which can be used to `pip install <wheel-file>`.
 
 This package will also include the latest Horovod tagged release.
-
 
 ## Installing Packages
 
