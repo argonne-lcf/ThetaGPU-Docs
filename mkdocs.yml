@@ -6,7 +6,7 @@ nav:
   - GPU Monitoring: GPU Monitoring.md
   - Python Virtual Environments: python_venvs.md
   - MPI: mpi.md
-  - Dask-MPI: daskmpi/README.md
+  #- Dask-MPI: daskmpi/README.md
   - Singularity Containers: Singularity Containers.md
   - Building Python Packages in a Container: building_python_packages.md
   - Jupyter: jupyter.md
