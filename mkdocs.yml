@@ -37,8 +37,8 @@ theme:
   features:
     - tabs
     - instant
-  icon:
-    logo: 'images/Argonne_wireframe_white_transparent.png'
+  logo: 'images/Argonne_wireframe_white_transparent.png'
+  favicon: 'images/alcf_favicon.ico'
 
 markdown_extensions:
   - admonition
