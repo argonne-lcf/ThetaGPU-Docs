@@ -38,7 +38,7 @@ theme:
     - tabs
     - instant
   icon:
-    logo: material/cloud
+    logo: 'images/Argonne_wireframe_white_transparent.png'
 
 markdown_extensions:
   - admonition
