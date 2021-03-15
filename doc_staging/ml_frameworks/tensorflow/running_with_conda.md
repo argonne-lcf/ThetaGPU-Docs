@@ -11,9 +11,9 @@ qsub -I -n 1 -t 30 -A <project-name>
 
 Given A100 and CUDA 11 are very new, we have a build of the master branch of Tensorflow which includes better performance and support for these architectures.
 
-Users can find the latest builds via the `module avail pytorch` command, which will list available builds such as `conda/pytorch/2021-03-02` which is a version of the master branch git repo as of the date `2021-03-02`. This version can be used by
+Users can find the latest builds via the `module avail tensorflow` command, which will list available builds such as `conda/tensorflow/2021-03-02` which is a version of the master branch git repo as of the date `2021-03-02`. This version can be used by
 ```bash
-module load conda/pytorch/2021-03-02  # loads conda into your environment, sets up appropriate CUDA libraries
+module load conda/tensorflow/2021-03-02  # loads conda into your environment, sets up appropriate CUDA libraries
 conda activate # activates conda with python 
 ```
 
