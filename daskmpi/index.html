@@ -1,0 +1,1013 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../images/alcf_favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+    
+    
+      
+        <title>Dask-mpi on ThetaGPU - Theta GPU Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e35208c4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="preference" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dask-mpi-on-thetagpu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Theta GPU Documentation" class="md-header__button md-logo" aria-label="Theta GPU Documentation" data-md-component="logo">
+      
+  <img src="../images/Argonne_wireframe_white_transparent.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Theta GPU Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Dask-mpi on ThetaGPU
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/argonne-lcf/ThetaGPU-Docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    argonne-lcf/ThetaGPU-Docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Theta GPU Documentation" class="md-nav__button md-logo" aria-label="Theta GPU Documentation" data-md-component="logo">
+      
+  <img src="../images/Argonne_wireframe_white_transparent.png" alt="logo">
+
+    </a>
+    Theta GPU Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/argonne-lcf/ThetaGPU-Docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    argonne-lcf/ThetaGPU-Docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system_overview_and_node_information/" class="md-nav__link">
+        System Overview and Node Information
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu_node_queue_and_policy/" class="md-nav__link">
+        GPU Node Queues and Policy
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GPU%20Monitoring/" class="md-nav__link">
+        GPU Monitoring
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python_venvs/" class="md-nav__link">
+        Python Virtual Environments
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mpi/" class="md-nav__link">
+        MPI
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Singularity%20Containers/" class="md-nav__link">
+        Singularity Containers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building_python_packages/" class="md-nav__link">
+        Building Python Packages in a Container
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jupyter/" class="md-nav__link">
+        Jupyter
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      <label class="md-nav__link" for="__nav_10">
+        DL Frameworks
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DL Frameworks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          DL Frameworks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_1" type="checkbox" id="__nav_10_1" >
+      
+      <label class="md-nav__link" for="__nav_10_1">
+        TensorFlow
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="TensorFlow" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_1">
+          <span class="md-nav__icon md-icon"></span>
+          TensorFlow
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/nvidia_container_notes/" class="md-nav__link">
+        Running with Singularity
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/running_with_conda/" class="md-nav__link">
+        Running with Conda
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/tensorboard_instructions/" class="md-nav__link">
+        Tensorboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_2" type="checkbox" id="__nav_10_2" >
+      
+      <label class="md-nav__link" for="__nav_10_2">
+        PyTorch
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="PyTorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_2">
+          <span class="md-nav__icon md-icon"></span>
+          PyTorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/pytorch/running_with_conda/" class="md-nav__link">
+        Running with Conda
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_parallel_training/" class="md-nav__link">
+        Data Parallel Training
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      <label class="md-nav__link" for="__nav_11">
+        Building and Compiling
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Building and Compiling" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Building and Compiling
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Building_Compiling/" class="md-nav__link">
+        Python/C++ code interoperability
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Building_Compiling/compiling_and_linking/" class="md-nav__link">
+        Compiling and Linking
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../balsam/" class="md-nav__link">
+        Balsam
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deephyper/" class="md-nav__link">
+        DeepHyper
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    Install
+  </a>
+  
+    <nav class="md-nav" aria-label="Install">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-storage" class="md-nav__link">
+    Local storage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#submit-a-batch-job" class="md-nav__link">
+    Submit a batch job
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-a-script-in-an-interactive-session" class="md-nav__link">
+    Run a script in an interactive session
+  </a>
+  
+    <nav class="md-nav" aria-label="Run a script in an interactive session">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dask-dashboard" class="md-nav__link">
+    Dask dashboard
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-a-jupyterlab-interactive-session" class="md-nav__link">
+    Start a JupyterLab interactive session
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/argonne-lcf/ThetaGPU-Docs/edit/master/docs/daskmpi/README.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="dask-mpi-on-thetagpu">Dask-mpi on ThetaGPU</h1>
+<p>How to run <a href="http://mpi.dask.org/en/latest/">Dask-MPI</a> on <strong>ThetaGPU</strong> at Argonne Leadership Computing Facility.</p>
+<ul>
+<li><a href="#install">Install</a></li>
+<li><a href="#batch">Submit a batch job</a></li>
+<li><a href="#interactive">Run a script in an interactive session</a></li>
+<li><a href="#jlab">Start a JupyterLab interactive session</a></li>
+</ul>
+<p><a id="install"></a></p>
+<h2 id="install">Install</h2>
+<ol>
+<li>
+<p><code>ssh</code> into one of Theta's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh username@theta.alcf.anl.gov
+</code></pre></div>
+</li>
+<li>
+<p><code>ssh</code> into one of ThetaGPU's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh thetagpusn1
+</code></pre></div>
+</li>
+<li>
+<p>Load a pre-defined conda environment (either one works fine)</p>
+<p>with pytorch
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/pt_master/2020-11-25/mconda3/setup.sh
+</code></pre></div></p>
+<p>with tensorflow
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/tf_master/2020-11-11/mconda3/setup.sh
+</code></pre></div></p>
+</li>
+<li>
+<p>Create a new conda environment</p>
+<div class="highlight"><pre><span></span><code>conda create -n envname
+</code></pre></div>
+</li>
+<li>
+<p>Activate the environment</p>
+<div class="highlight"><pre><span></span><code>conda activate envname
+</code></pre></div>
+</li>
+<li>
+<p>Install required packages</p>
+<div class="highlight"><pre><span></span><code>conda install -c rapidsai -c nvidia -c numba -c conda-forge <span class="se">\</span>
+cudf cupy <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 <span class="nv">ipython</span><span class="o">=</span><span class="m">5</span>.8 cudatoolkit mpi4py dask dask-mpi <span class="se">\</span>
+bokeh jupyter Jupyterlab ipykernel
+</code></pre></div>
+</li>
+<li>
+<p>Download the files <code>start_daskmpi.py</code>, <code>cupy_test.py</code> and <code>jupyterlab_cupy_test.ipynb</code> from this repository into a directory, e.g. <code>dirname</code>. </p>
+</li>
+<li>
+<p>Optional: create the Jupyter kernel for interactive JupyterLab sessions</p>
+<div class="highlight"><pre><span></span><code><span class="nv">env</span><span class="o">=</span><span class="k">$(</span>basename <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$CONDA_PREFIX</span><span class="sb">`</span><span class="k">)</span>
+python -m ipykernel install --user --name <span class="s2">&quot;</span><span class="nv">$env</span><span class="s2">&quot;</span> --display-name <span class="s2">&quot;Python [conda env:&quot;</span><span class="nv">$env</span><span class="s2">&quot;]&quot;</span>
+</code></pre></div>
+</li>
+</ol>
+<h3 id="local-storage">Local storage</h3>
+<p>If your dataset is larger than the combined memory of all compute nodes, Dask will spill excess data to disk. 
+If you do not have write permission to local storage on the compute nodes, spilling to disk will be disabled by default, as explained <a href="https://docs.dask.org/en/latest/setup/hpc.html#local-storage">here</a>. </p>
+<!-- See these [instructions](https://www.alcf.anl.gov/support-center/theta/theta-file-systems) on how to request access to local storage on Theta's compute nodes. -->
+
+<p><a id="batch"></a></p>
+<h2 id="submit-a-batch-job">Submit a batch job</h2>
+<p>This will run <code>cupy_test.py</code> using 8 GPUs on one node.</p>
+<ol>
+<li>
+<p><code>ssh</code> into one of Theta's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh username@theta.alcf.anl.gov
+</code></pre></div>
+</li>
+<li>
+<p><code>ssh</code> into one of ThetaGPU's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh thetagpusn1
+</code></pre></div>
+</li>
+<li>
+<p>Submit a batch job</p>
+<ul>
+<li>
+<p>on a <strong>single</strong> node</p>
+<div class="highlight"><pre><span></span><code>qsub -n <span class="m">1</span> -q full-node -A datascience -t <span class="m">00</span>:30:00 daskmpi_job_gpu.sh
+</code></pre></div>
+<p>where the script <code>daskmpi_job_gpu.sh</code> is</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/pt_master/2020-11-25/mconda3/setup.sh
+conda activate envname
+<span class="nb">cd</span> dirname
+<span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s1">&#39;/full/path/to/dirname&#39;</span>
+mpirun -np <span class="m">9</span> python start_daskmpi.py cupy_test.py
+</code></pre></div>
+<p>The number of processors (<code>-np</code>) should be (at least) the number of GPUs per node plus one.</p>
+</li>
+<li>
+<p>on <strong>multiple</strong> nodes</p>
+<div class="highlight"><pre><span></span><code>qsub -n <span class="m">2</span> -q full-node -A datascience -t <span class="m">00</span>:30:00 daskmpi_job_gpu.sh
+</code></pre></div>
+<p>where the script <code>daskmpi_job_gpu.sh</code> is</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/pt_master/2020-11-25/mconda3/setup.sh
+conda activate envname
+<span class="nb">cd</span> dirname
+<span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s1">&#39;/full/path/to/dirname&#39;</span>
+mpirun -x LD_LIBRARY_PATH -x PYTHONPATH -x PATH -np <span class="m">20</span> -npernode <span class="m">10</span> --hostfile <span class="nv">$COBALT_NODEFILE</span> python start_daskmpi.py cupy_test.py
+</code></pre></div>
+<p>The number of processors per node (<code>-npernode</code>) should be (at least) the number of GPUs per node plus one.  <br />
+The number of processors (<code>-np</code>) should be <code>-npernode</code> times the number of nodes requested. </p>
+</li>
+</ul>
+</li>
+</ol>
+<p><a id="interactive"></a></p>
+<h2 id="run-a-script-in-an-interactive-session">Run a script in an interactive session</h2>
+<ol>
+<li>
+<p><code>ssh</code> into one of Theta's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh username@theta.alcf.anl.gov
+</code></pre></div>
+</li>
+<li>
+<p><code>ssh</code> into one of ThetaGPU's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh thetagpusn1
+</code></pre></div>
+</li>
+<li>
+<p>Submit an interactive job on <code>n</code> nodes</p>
+<div class="highlight"><pre><span></span><code>qsub -n <span class="m">2</span> -q full-node -A datascience -I -t <span class="m">00</span>:30:00
+</code></pre></div>
+<p>A shell opens up on one of the compute nodes</p>
+</li>
+<li>
+<p>Load a pre-defined conda environment (either one works fine)</p>
+<p>with pytorch
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/pt_master/2020-11-25/mconda3/setup.sh
+</code></pre></div></p>
+<p>with tensorflow
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/tf_master/2020-11-11/mconda3/setup.sh
+</code></pre></div></p>
+</li>
+<li>
+<p>Activate the environment created in the <a href="#install">install</a> section</p>
+<div class="highlight"><pre><span></span><code>conda activate envname
+</code></pre></div>
+</li>
+<li>
+<p><code>cd</code> into the directory <code>dirname</code> where files <code>start_daskmpi.py</code> and <code>cupy_test.py</code> are </p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> dirname
+</code></pre></div>
+</li>
+<li>
+<p><code>export</code> the directory where <code>cupy_test.py</code> is to <code>$PYTHONPATH</code></p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="s1">&#39;/full/path/to/dirname&#39;</span>
+</code></pre></div>
+</li>
+<li>
+<p>Run the example script <code>cupy_test.py</code> (taken from "<a href="https://blog.dask.org/2019/01/03/dask-array-gpus-first-steps">GPU Dask Arrays, first steps: throwing Dask and CuPy together</a>")</p>
+<ul>
+<li>
+<p><strong>single node</strong></p>
+<div class="highlight"><pre><span></span><code>mpirun -np <span class="m">9</span> python start_daskmpi.py cupy_test.py
+</code></pre></div>
+<p>The number of processors (<code>-np</code>) should be (at least) the number of GPUs per node plus one.</p>
+<p>The output should be similar to the following: </p>
+<div class="highlight"><pre><span></span><code>Starting the scheduler
+Scheduler address: tcp://172.23.2.199:8786 on node thetagpu11
+Starting the workers
+Client status: &lt;Client: &#39;tcp://172.23.2.199:8786&#39; processes=8 threads=8, memory=270.50 GB&gt;
+
+
+To connect to the Dask dashboard, execute the following command in a shell on your local machine:
+    ssh -t -L 8787:localhost:8787 username@theta.alcf.anl.gov ssh -t -L 8787:localhost:8787 thetagpusn1 ssh -t -L 8787:localhost:8787 thetagpu11
+
+To open the Dask dashboard, go to:
+    http://localhost:8787/status
+
+
+Operation on dask.array (from https://blog.dask.org/2019/01/03/dask-array-gpus-first-steps):
+with gpus
+elapsed time: 3.932972
+
+without gpus
+elapsed time: 47.268787
+
+Code ran successfully.
+Successfully exited
+</code></pre></div>
+</li>
+<li>
+<p><strong>multiple nodes</strong></p>
+<div class="highlight"><pre><span></span><code>mpirun -x LD_LIBRARY_PATH -x PYTHONPATH -x PATH -np <span class="m">20</span> -npernode <span class="m">10</span> --hostfile <span class="nv">$COBALT_NODEFILE</span> python start_daskmpi.py cupy_test.py
+</code></pre></div>
+<p>The number of processors per node (<code>-npernode</code>) should be (at least) the number of GPUs per node plus one.  <br />
+The number of processors (<code>-np</code>) should be <code>-npernode</code> times the number of nodes requested. </p>
+<p>The output should be similar to the following: </p>
+<div class="highlight"><pre><span></span><code>Starting the scheduler
+Scheduler address: tcp://172.23.2.192:8786 on node thetagpu04
+Starting the workers
+Client status: &lt;Client: &#39;tcp://172.23.2.192:8786&#39; processes=16 threads=16, memory=541.00 GB&gt;
+
+
+To connect to the Dask dashboard, execute the following command in a shell on your local machine:
+    ssh -t -L 8787:localhost:8787 username@theta.alcf.anl.gov ssh -t -L 8787:localhost:8787 thetagpusn1 ssh -t -L 8787:localhost:8787 thetagpu04
+
+To open the Dask dashboard, go to:
+    http://localhost:8787/status
+
+
+Operation on dask.array (from https://blog.dask.org/2019/01/03/dask-array-gpus-first-steps):
+with gpus
+elapsed time: 4.121156
+
+without gpus
+elapsed time: 23.829560
+
+Code ran successfully.
+Successfully exited
+</code></pre></div>
+<p>NB: In the <code>cupy_test.py</code> example the matrix size is not big enough to see a reduction of execution time between 8 GPUs (1 node) and 16 GPUs (2 nodes). Increase the value of variable <code>size</code> in <code>cupy_test.py</code> to make full use of the 16 GPUs. </p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="dask-dashboard">Dask dashboard</h4>
+<p>You can connect to the Dask dashboard on <code>http://localhost:8787/status</code> in you browser after you run the <code>ssh</code> command printed in the above output message in a shell on your local machine.</p>
+<p><a id="jlab"></a></p>
+<h2 id="start-a-jupyterlab-interactive-session">Start a JupyterLab interactive session</h2>
+<ol>
+<li>
+<p><code>ssh</code> into one of Theta's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh username@theta.alcf.anl.gov
+</code></pre></div>
+</li>
+<li>
+<p><code>ssh</code> into one of ThetaGPU's login nodes</p>
+<div class="highlight"><pre><span></span><code>ssh thetagpusn1
+</code></pre></div>
+</li>
+<li>
+<p>Submit an interactive job on <code>n</code> nodes</p>
+<div class="highlight"><pre><span></span><code>qsub -n <span class="m">2</span> -q full-node -A datascience -I -t <span class="m">00</span>:30:00
+</code></pre></div>
+<p>A shell opens up on one of the compute nodes</p>
+</li>
+<li>
+<p>Load a pre-defined conda environment (either one works fine)</p>
+<p>with pytorch
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/pt_master/2020-11-25/mconda3/setup.sh
+</code></pre></div></p>
+<p>with tensorflow
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/thetagpu/conda/tf_master/2020-11-11/mconda3/setup.sh
+</code></pre></div></p>
+</li>
+<li>
+<p>Activate the environment created in the <a href="#install">install</a> section</p>
+<div class="highlight"><pre><span></span><code>conda activate envname
+</code></pre></div>
+</li>
+<li>
+<p><code>cd</code> into the directory <code>dirname</code> where file <code>start_daskmpi.py</code> is</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> dirname
+</code></pre></div>
+</li>
+<li>
+<p>Run the <code>start_daskmpi.py</code> script without any argument to start a JupyterLab session</p>
+<ul>
+<li>
+<p><strong>single node</strong></p>
+<div class="highlight"><pre><span></span><code>mpirun -np <span class="m">9</span> python start_daskmpi.py
+</code></pre></div>
+<p>The number of processors (<code>-np</code>) should be (at least) the number of GPUs per node plus one.</p>
+</li>
+<li>
+<p><strong>multiple nodes</strong></p>
+<div class="highlight"><pre><span></span><code>mpirun -x LD_LIBRARY_PATH -x PYTHONPATH -x PATH -np <span class="m">20</span> -npernode <span class="m">10</span> --hostfile <span class="nv">$COBALT_NODEFILE</span> python start_daskmpi.py
+</code></pre></div>
+<p>The number of processors per node (<code>-npernode</code>) should be (at least) the number of GPUs per node plus one.  <br />
+The number of processors (<code>-np</code>) should be <code>-npernode</code> times the number of nodes requested. </p>
+</li>
+</ul>
+<p>The output should be similar to the following: </p>
+<div class="highlight"><pre><span></span><code>Starting the scheduler
+Scheduler address: tcp://172.23.2.203:8786 on node thetagpu15
+Starting the workers
+Client status: &lt;Client: &#39;tcp://172.23.2.203:8786&#39; processes=8 threads=8, memory=270.50 GB&gt;
+Starting JupyterLab on the scheduler...
+
+To connect to JupyterLab and Dask dashboard, execute the following command in a shell on your local machine:
+    ssh -t -L 7787:localhost:7787 -L 8787:localhost:8787 username@theta.alcf.anl.gov ssh -t -L 7787:localhost:7787 -L 8787:localhost:8787 thetagpusn1 ssh -t -L 7787:localhost:7787 -L 8787:localhost:8787 thetagpu15
+
+To open JupyterLab, go to (see log file /home/username/dask_logs/jupyterlab.log):
+    http://localhost:7787/?token=444f71ede62dfe1718f2499baee3483893fc14d6c7e97b88
+
+To open the Dask dashboard, go to:
+    http://localhost:8787/status
+
+JupyterLab started. Type &#39;stop&#39; to stop Dask: 
+</code></pre></div>
+</li>
+<li>
+<p>JupyterLab and Dask dashboard: 
+You can connect to JupyterLab on <code>http://localhost:7787/</code> in you browser and view the Dask dashboard on <code>http://localhost:8787/status</code> after you run the <code>ssh</code> command printed in the above output message in a shell on your local machine.</p>
+<p>You can try the example notebook <code>jupyterlab_cupy_test.ipynb</code>. </p>
+</li>
+<li>
+<p>Type <code>stop</code> to terminate the Dask session.</p>
+</li>
+</ol>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/argonne-lcf/ThetaGPU-Docs" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["tabs", "instant"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,955 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../images/alcf_favicon.ico">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+    
+    
+      
+        <title>Data Parallel Training - Theta GPU Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.e35208c4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="preference" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#distributed-training-on-thetagpu-using-data-parallelism" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Theta GPU Documentation" class="md-header__button md-logo" aria-label="Theta GPU Documentation" data-md-component="logo">
+      
+  <img src="../images/Argonne_wireframe_white_transparent.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Theta GPU Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Parallel Training
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/argonne-lcf/ThetaGPU-Docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    argonne-lcf/ThetaGPU-Docs
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Theta GPU Documentation" class="md-nav__button md-logo" aria-label="Theta GPU Documentation" data-md-component="logo">
+      
+  <img src="../images/Argonne_wireframe_white_transparent.png" alt="logo">
+
+    </a>
+    Theta GPU Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/argonne-lcf/ThetaGPU-Docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    argonne-lcf/ThetaGPU-Docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../system_overview_and_node_information/" class="md-nav__link">
+        System Overview and Node Information
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gpu_node_queue_and_policy/" class="md-nav__link">
+        GPU Node Queues and Policy
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GPU%20Monitoring/" class="md-nav__link">
+        GPU Monitoring
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python_venvs/" class="md-nav__link">
+        Python Virtual Environments
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mpi/" class="md-nav__link">
+        MPI
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Singularity%20Containers/" class="md-nav__link">
+        Singularity Containers
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../building_python_packages/" class="md-nav__link">
+        Building Python Packages in a Container
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jupyter/" class="md-nav__link">
+        Jupyter
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" checked>
+      
+      <label class="md-nav__link" for="__nav_10">
+        DL Frameworks
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DL Frameworks" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          DL Frameworks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_1" type="checkbox" id="__nav_10_1" >
+      
+      <label class="md-nav__link" for="__nav_10_1">
+        TensorFlow
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="TensorFlow" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_1">
+          <span class="md-nav__icon md-icon"></span>
+          TensorFlow
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/nvidia_container_notes/" class="md-nav__link">
+        Running with Singularity
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/running_with_conda/" class="md-nav__link">
+        Running with Conda
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/tensorflow/tensorboard_instructions/" class="md-nav__link">
+        Tensorboard
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10_2" type="checkbox" id="__nav_10_2" >
+      
+      <label class="md-nav__link" for="__nav_10_2">
+        PyTorch
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="PyTorch" data-md-level="2">
+        <label class="md-nav__title" for="__nav_10_2">
+          <span class="md-nav__icon md-icon"></span>
+          PyTorch
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ml_frameworks/pytorch/running_with_conda/" class="md-nav__link">
+        Running with Conda
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Parallel Training
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Data Parallel Training
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-software-environement-setup" class="md-nav__link">
+    I. Software environement setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-tensorflow-with-horovod" class="md-nav__link">
+    II. TensorFlow with Horovod
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-pytorch-with-horovod" class="md-nav__link">
+    III. PyTorch with Horovod
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-pytorch-with-ddp" class="md-nav__link">
+    IV. PyTorch with DDP
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-mpi-profiling-for-data-parallel-training" class="md-nav__link">
+    V. MPI Profiling for data parallel training
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      <label class="md-nav__link" for="__nav_11">
+        Building and Compiling
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Building and Compiling" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          Building and Compiling
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Building_Compiling/" class="md-nav__link">
+        Python/C++ code interoperability
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Building_Compiling/compiling_and_linking/" class="md-nav__link">
+        Compiling and Linking
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../balsam/" class="md-nav__link">
+        Balsam
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deephyper/" class="md-nav__link">
+        DeepHyper
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#i-software-environement-setup" class="md-nav__link">
+    I. Software environement setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ii-tensorflow-with-horovod" class="md-nav__link">
+    II. TensorFlow with Horovod
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iii-pytorch-with-horovod" class="md-nav__link">
+    III. PyTorch with Horovod
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iv-pytorch-with-ddp" class="md-nav__link">
+    IV. PyTorch with DDP
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v-mpi-profiling-for-data-parallel-training" class="md-nav__link">
+    V. MPI Profiling for data parallel training
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/argonne-lcf/ThetaGPU-Docs/edit/master/docs/data_parallel_training.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="distributed-training-on-thetagpu-using-data-parallelism">Distributed training on ThetaGPU using data parallelism</h1>
+<p>Author: Huihuo Zheng <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#117;&#105;&#104;&#117;&#111;&#46;&#122;&#104;&#101;&#110;&#103;&#64;&#97;&#110;&#108;&#46;&#103;&#111;&#118;">&#104;&#117;&#105;&#104;&#117;&#111;&#46;&#122;&#104;&#101;&#110;&#103;&#64;&#97;&#110;&#108;&#46;&#103;&#111;&#118;</a></p>
+<p>There are two schemes for distributed learning:</p>
+<ol>
+<li><strong>Model parallelization</strong>: in this scheme, disjoint subsets of a neural network are assigned to different devices. Therefore, all the computations associated to the subsets are distributed. Communication happens between devices whenever there is dataflow between two subsets. Model parallelization is suitable when the model is too large to be fitted into a single device (CPU/GPU) because of the memory capacity. However, partitioning the model into different subsets is not an easy task, and there might potentially introduce load imbalance issues limiting the scaling efficiency.  </li>
+<li><strong>Data parallelization</strong>: in this scheme, all the workers own a replica of the model. The global batch of data is split into multiple minibatches, and processed by different workers. Each worker computes the corresponding loss and gradients with respect to the data it posseses. Before the updating of the parameters at each epoch, the loss and gradients are averaged among all the workers through a collective operation. This scheme is relatively simple to implement. MPI_Allreduce is the only commu</li>
+</ol>
+<p>Our recent presentation about the data parallel training can be found here: https://youtu.be/930yrXjNkgM</p>
+<p>In this documentation, we would like to show how to do data parallel training on ThetaGPU. </p>
+<h2 id="i-software-environement-setup">I. Software environement setup</h2>
+<p>We are still in the process of setting up the software stacks on ThetaGPU. Currently, one can get TensorFlow, PyTorch, and Horovod with the following setup script. 
+<div class="highlight"><pre><span></span><code><span class="nb">source</span> /lus/theta-fs0/software/datascience/thetagpu/anaconda3/setup.sh
+</code></pre></div></p>
+<h2 id="ii-tensorflow-with-horovod">II. TensorFlow with Horovod</h2>
+<p>1) <strong>Initialize Horovod</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">horovod.tensorflow</span> <span class="k">as</span> <span class="nn">hvd</span> 
+<span class="n">hvd</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</code></pre></div>
+After this initialization, the rank ID and the number of processes can be refered as <code>hvd.rank()</code> and <code>hvd.size()</code>. Besides, one can also call <code>hvd.local_rank()</code> to get the local rank ID within a node. This is useful when we are trying to assign GPUs to each rank. </p>
+<p>2) <strong>Assign GPU to each rank</strong>
+<div class="highlight"><pre><span></span><code>    <span class="n">gpus</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">list_physical_devices</span><span class="p">(</span><span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">gpu</span> <span class="ow">in</span> <span class="n">gpus</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">set_memory_growth</span><span class="p">(</span><span class="n">gpu</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">gpus</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">set_visible_devices</span><span class="p">(</span><span class="n">gpus</span><span class="p">[</span><span class="n">hvd</span><span class="o">.</span><span class="n">local_rank</span><span class="p">()],</span> <span class="s1">&#39;GPU&#39;</span><span class="p">)</span>
+</code></pre></div>
+In this case, we set one GPU per process: ID=<code>hvd.local_rank()</code></p>
+<p>3) <strong>Scale the learning rate.</strong></p>
+<p>Typically, since we use multiple workers, the global batch is usually increases n times (n is the number of workers). The learning rate should increase proportionally as follows (assuming that the learning rate initially is 0.01).
+<div class="highlight"><pre><span></span><code><span class="n">opt</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdagradOptimizer</span><span class="p">(</span><span class="mf">0.01</span><span class="o">*</span><span class="n">hvd</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+</code></pre></div></p>
+<p>4) <strong>Wrap the optimizer with Distributed Optimizer</strong>
+<div class="highlight"><pre><span></span><code><span class="n">opt</span> <span class="o">=</span> <span class="n">hvd</span><span class="o">.</span><span class="n">DistributedOptimizer</span><span class="p">(</span><span class="n">opt</span><span class="p">)</span>
+</code></pre></div></p>
+<p>5) <strong>Broadcast the model from rank 0</strong>
+This is to make sure that all the workers will have the same starting point.
+<div class="highlight"><pre><span></span><code>hooks = [hvd.BroadcastGlobalVariablesHook(0)]
+</code></pre></div></p>
+<p>6) <strong>Loading data according to rank ID</strong>
+TensorFlow has some functions for parallel distribution of data. But for specific applications, the user might have to write their own data loader. </p>
+<p>In general, one has two ways to deal with the data loading. 
+1. Each worker randomly select one batch of data from the dataset at each step. In such case, each worker can see the entire dataset. It is important to make sure that the different worker have different random seeds so that they will get different data at each step.<br />
+2. Each worker accesses a subset of dataset. One manually partition the entire dataset into different partions, and each rank access one of the partions. </p>
+<p>In both cases, the total number of steps per epoch is <code>nsamples / hvd.size()</code>.</p>
+<p>7) <strong>Checkpointing on root rank</strong>
+It is important to let only one process to do the checkpointing I/O lest perhaps the file been corrupted. 
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">hvd</span><span class="o">.</span><span class="n">rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+     <span class="n">checkpoint</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">)</span>
+</code></pre></div></p>
+<p>We provided some examples in: 
+https://github.com/argonne-lcf/sdl_ai_workshop/blob/master/01_distributedDeepLearning/Horovod/tensorflow2_mnist.py</p>
+<h2 id="iii-pytorch-with-horovod">III. PyTorch with Horovod</h2>
+<p>It is very similar for PyTorch with Horovod
+1) <strong>Initialize Horovod</strong>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">horovod.torch</span> <span class="k">as</span> <span class="nn">hvd</span> 
+<span class="n">hvd</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</code></pre></div>
+After this initialization, the rank ID and the number of processes can be refered as <code>hvd.rank()</code> and <code>hvd.size()</code>. Besides, one can also call <code>hvd.local_rank()</code> to get the local rank ID within a node. This is useful when we are trying to assign GPUs to each rank. </p>
+<p>2) <strong>Assign GPU to each rank</strong>
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="n">hvd</span><span class="o">.</span><span class="n">local_rank</span><span class="p">())</span>
+</code></pre></div>
+In this case, we set one GPU per process: ID=<code>hvd.local_rank()</code></p>
+<p>3) <strong>Scale the learning rate.</strong></p>
+<p>Typically, since we use multiple workers, the global batch is usually increases n times (n is the number of workers). The learning rate should increase proportionally as follows (assuming that the learning rate initially is 0.01).
+<div class="highlight"><pre><span></span><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">lr</span> <span class="o">*</span> <span class="n">hvd</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">momentum</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">momentum</span><span class="p">)</span>
+</code></pre></div></p>
+<p>4) <strong>Wrap the optimizer with Distributed Optimizer</strong>
+<div class="highlight"><pre><span></span><code><span class="n">optimizer</span> <span class="o">=</span> <span class="n">hvd</span><span class="o">.</span><span class="n">DistributedOptimizer</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">named_parameters</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">(),</span> <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">)</span>
+</code></pre></div></p>
+<p>5) <strong>Broadcast the model from rank 0</strong>
+This is to make sure that all the workers will have the same starting point.
+<div class="highlight"><pre><span></span><code>hvd.broadcast_parameters(model.state_dict(), root_rank=0)
+hvd.broadcast_optimizer_state(optimizer, root_rank=0)
+</code></pre></div></p>
+<p>6) <strong>Loading data according to rank ID</strong>
+TensorFlow has some functions for parallel distribution of data. But for specific applications, the user might have to write their own data loader. </p>
+<p>In general, one has two ways to deal with the data loading. 
+1. Each worker randomly select one batch of data from the dataset at each step. In such case, each worker can see the entire dataset. It is important to make sure that the different worker have different random seeds so that they will get different data at each step.<br />
+2. Each worker accesses a subset of dataset. One manually partition the entire dataset into different partions, and each rank access one of the partions. </p>
+<p>In both cases, the total number of steps per epoch is <code>nsamples / hvd.size()</code>.</p>
+<p>7) <strong>Checkpointing on root rank</strong>
+It is important to let only one process to do the checkpointing I/O lest perhaps the file been corrupted. 
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">hvd</span><span class="o">.</span><span class="n">rank</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+     <span class="n">checkpoint</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">)</span>
+</code></pre></div></p>
+<p>8) <strong>Average metric across all the workers</strong>
+Notice that in the distributed training, any tensor are local to each worker. In order to get the global averaged value, one can use Horovod allreduce. Below is an example on how to do the average. 
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">tensor_average</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">with_hvd</span><span class="p">):</span>
+        <span class="n">avg_tensor</span> <span class="o">=</span> <span class="n">hvd</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">avg_tensor</span> <span class="o">=</span> <span class="n">tensor</span>
+    <span class="k">return</span> <span class="n">avg_tensor</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+</code></pre></div>
+We provided some examples in: 
+https://github.com/argonne-lcf/sdl_ai_workshop/blob/master/01_distributedDeepLearning/Horovod/pytorch_mnist.py</p>
+<h2 id="iv-pytorch-with-ddp">IV. PyTorch with DDP</h2>
+<p>PyTorch has its own native parallelization library called DDP. We will provide omre details on how to run this on ThetaGPU. The current PyTorch on ThetaGPU does not have DDP built in. We will update to our users once we have DDP. </p>
+<p>For now, please refer to https://pytorch.org/tutorials/intermediate/ddp_tutorial.html. </p>
+<h2 id="v-mpi-profiling-for-data-parallel-training">V. MPI Profiling for data parallel training</h2>
+<p>We support two ways for profling the performance of data parallel training. </p>
+<p>1) mpitrace library
+MPI trace allows us to get a flat profling of all the MPI function calls involved during the training. To enable this, one can set the environment variable
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">LD_PRELOAD</span><span class="o">=</span>/lus/theta-fs0/software/datascience/thetagpu/hpctw/lib/libmpitrace.so
+</code></pre></div>
+Then run the application as usual. MPI profiling results will be generated after the run finishes mpi_profile.XXXX.[rank_id].</p>
+<p>Below is an example output
+<div class="highlight"><pre><span></span><code>Data for MPI rank 0 of 8:
+Times and statistics from MPI_Init() to MPI_Finalize().
+-----------------------------------------------------------------------
+MPI Routine                        #calls     avg. bytes      time(sec)
+-----------------------------------------------------------------------
+MPI_Comm_rank                           3            0.0          0.000
+MPI_Comm_size                           3            0.0          0.000
+MPI_Bcast                             520       197140.6          0.518
+MPI_Allreduce                       24561       208138.3        162.080
+MPI_Gather                            126            4.0          0.363
+MPI_Gatherv                           126            0.0          0.434
+MPI_Allgather                           2            4.0          0.000
+-----------------------------------------------------------------
+MPI task 0 of 8 had the maximum communication time.
+total communication time = 163.396 seconds.
+total elapsed time       = 187.298 seconds.
+user cpu time            = 4127.728 seconds.
+system time              = 728.100 seconds.
+max resident set size    = 8403.938 MBytes.
+
+Rank 0 reported the largest memory utilization : 8403.94 MBytes
+Rank 0 reported the largest elapsed time : 187.30 sec
+
+-----------------------------------------------------------------
+Message size distributions:
+
+MPI_Bcast                 #calls    avg. bytes      time(sec)
+                             126           4.0          0.008
+                               1           8.0          0.000
+                             121          25.0          0.006
+                              30         251.5          0.002
+                              32         512.0          0.002
+                              64        1024.0          0.005
+                              44        2048.0          0.003
+                              29        4092.8          0.003
+                              16        8192.0          0.032
+
+
+MPI_Allreduce             #calls    avg. bytes      time(sec)
+                           19780           8.0         90.822
+                            4576          24.0         18.239
+                              43        4004.0          0.295
+                               5     2780979.2          0.469
+                              50     8160289.2         20.893
+                               9    11803392.0          0.964
+                              48    28060640.0          3.293
+                              50    64731668.5         27.105
+
+MPI_Gather                #calls    avg. bytes      time(sec)
+                             126           4.0          0.363
+</code></pre></div></p>
+<p>The useful information here is the message size distribution. </p>
+<p>2) Horovod Timeline
+To perform Horovod timeline analysis, one has to set the environment variable HOROVOD_TIMELINE which specifies the file for the output.
+export HOROVOD_TIMELINE=timeline.json
+This file is only recorded on rank 0, but it contains information about activity of all workers. You can then open the timeline file using the chrome://tracing facility of the Chrome browser.</p>
+<p>More details: https://horovod.readthedocs.io/en/stable/timeline_include.html</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../ml_frameworks/pytorch/running_with_conda/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Running with Conda
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../Building_Compiling/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Python/C++ code interoperability
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/argonne-lcf/ThetaGPU-Docs" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["tabs", "instant"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+    
+  </body>
+</html>
