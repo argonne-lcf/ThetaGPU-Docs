@@ -9,7 +9,6 @@ Wait for job 10003623 to start...
 Opening interactive session to thetagpu21
 ```
 3. From the ThetaGPU compute node, start a `jupyter` notebook. (**Note:** This assumes you're in a suitable python environment containing `jupyter`, for more information on setting up a `conda` environment, see [Running Tensorflow with Conda](https://argonne-lcf.github.io/ThetaGPU-Docs/ml_frameworks/tensorflow/running_with_conda/)):
-
 ```bash
 (thetagpu21) $ jupyter notebook&
 ```
