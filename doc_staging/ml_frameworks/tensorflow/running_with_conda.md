@@ -1,4 +1,4 @@
-# Running Tensorflow with Conda
+# Running TensorFlow with Conda
 
 Beware that these builds use CUDA and will not work on login nodes, which does not have CUDA installed as there are no GPUs.
 
