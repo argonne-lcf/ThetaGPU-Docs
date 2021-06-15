@@ -8,7 +8,7 @@ The installation procedure of DeepHyper on ThetaGPU can be found on the official
 
 ## Example
 
-From a ThetaGPU login node, you may then initiate an hyperparameter search using the `ray` evaluator through the `ray-submit` command line.  For instance:
+From a ThetaGPU service node (e.g. `thetagpusn1`), you may then initiate a hyperparameter search using the `ray` evaluator through the `ray-submit` command line.  For instance:
 
 ```bash
 deephyper start-project hps_demo
