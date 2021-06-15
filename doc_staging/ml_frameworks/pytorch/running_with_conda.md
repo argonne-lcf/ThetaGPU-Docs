@@ -36,9 +36,9 @@ If you need more flexibility, you can clone the conda environment into a custom 
 2. Create/edit your `$HOME/.condarc` file to include this these lines, replacing `<project-name` with your project name. By default, Conda will your `$HOME/.conda/*` area for caching files. Since home directories are limited to 100GB, this fills up quickly. This addition tells Conda to use your project space for cache storage instead.
 ```bash
 pkgs_dirs:
-  - /lus/theta-fs0/projects/<project-name>/conda/${ENV_NAME}/pkgs
+  - /lus/theta-fs0/projects/<project-name>/conda/pkgs
 envs_dirs:
-  - /lus/theta-fs0/projects/<project-name>/conda/${ENV_NAME}/envs
+  - /lus/theta-fs0/projects/<project-name>/conda/envs
 ```
 3. Clone the environment into a local path to which you have write access
 ```bash
