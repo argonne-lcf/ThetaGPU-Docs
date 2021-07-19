@@ -2,7 +2,7 @@
 
 Each GPU on ThetaGPU hosts 8 A100 GPUs.  You can see information about these GPUs via the command `nvidia-smi`.
 
-Each GPU has 40Gb of on-GPU memory.  When you run applications, you will know the GPU is in use when you see the memory increase and the GPU Utilization will be non-zero.
+Each GPU has 40 GB of on-GPU memory.  When you run applications, you will know the GPU is in use when you see the memory increase and the GPU Utilization will be non-zero.
 
 You can target a specific GPU with `nvidia-smi -i 0` for the first GPU, for example.
 
@@ -20,8 +20,8 @@ export CUDA_VISIBLE_DEVICES="0,1,7"
 
 In these cases, the GPU orderings will appear as a consecutive list starting with 0.
 
-From inside an application, many software frameworks have ability to let you target specific GPUs, including tensorflow and pytorch:
+From inside an application, many software frameworks have ability to let you target specific GPUs, including TensorFlow and PyTorch:
 
-[Tensorflow](https://www.tensorflow.org/guide/gpu)
+[TensorFlow](https://www.tensorflow.org/guide/gpu)
 
-[Pytorch](https://pytorch.org/docs/stable/cuda.html)
+[PyTorch](https://pytorch.org/docs/stable/cuda.html)
