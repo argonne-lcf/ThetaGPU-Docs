@@ -2,10 +2,12 @@
 
 ## Base Python3.8 installation
 
-A Miniconda base environment using Python 3.8 and containing optimized builds of Tensorflow and Horovod is available by sourcing the setup script:
+A Miniconda base environment using Python 3.8 and containing optimized builds of
+TensorFlow, PyTorch, and Horovod is available by loading the appropriate module:
 
 ```bash
-source /lus/theta-fs0/software/thetagpu/conda/tf_master/latest/mconda3/setup.sh
+module load conda/tensorflow
+conda activate
 ```
 
 ## Extending with virtualenv
@@ -17,6 +19,18 @@ python -m venv --system-site-packages my_env
 source my_env/bin/activate
 # Install additional packages here...
 ```
+You can always retroactively change the `--system-site-packages` flag state for this
+virtual environment by editing `my_env/pyvenv.cfg` and changing the value of the line
+`include-system-site-packages = false`.
+
+To install a different version of a package that is already installed in the base
+environment, you can use:
+```
+pip install --ignore-installed  ... # or -I
+```
+The shared base environment is not writable, so it is impossible to remove or uninstall
+packages from it. The packages installed with the above `pip` command should shadow those
+installed in the base environment.
 
 ## Extending with conda
 If you prefer to use `conda` to manage your environment, refer to the [conda

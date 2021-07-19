@@ -7,25 +7,31 @@ One can test these software in an interactive session:
 qsub -I -n 1 -t 30 -A <project-name>
 ```
 
-## Tensorflow (master build)
+## TensorFlow (master build)
 
-Given A100 and CUDA 11 are very new, we have a build of the master branch of Tensorflow which includes better performance and support for these architectures.
+Given A100 and CUDA 11 are very new, we have a build of TensorFlow which includes better performance and support for these architectures.
 
-Users can find the latest builds via the `module avail tensorflow` command, which will list available builds such as `conda/tensorflow/2021-03-02` which is a version of the master branch git repo as of the date `2021-03-02`. This version can be used by
+Users can find the latest builds via the `module avail conda` command, which will list
+available builds such as `conda/2021-06-26` which is a module that was built on
+`2021-06-26`. Use `module show conda/2021-06-26` or `module help conda/2021-06-26` to get
+high level info on which versions of the key packages and libraries that this particular
+module contains. This version can be used by
 ```bash
-module load conda/tensorflow/2021-03-02  # loads conda into your environment, sets up appropriate CUDA libraries
+module load conda/2021-06-26  # loads conda into your environment, sets up appropriate CUDA libraries
 conda activate # activates conda with python 
 ```
 
-This will setup a conda environment with a recent "from scratch" build of the Tensorflow repository on the master branch. 
+This will setup a conda environment with the "from scratch" build of TensorFlow.
 
-This package will also include the latest Horovod tagged release.
+This package will also include builds of PyTorch and Horovod tagged releases.
 
 ## Installing Packages
 
 ### Using `pip install --user`
 
-With the conda environment setup, one can install common Python modules using `pip install --users <module-name>` which will install packages in `$HOME/.local/lib/pythonX.Y/site-packages`.
+With the conda environment setup, one can install common Python modules using `pip install
+--users <module-name>` which will install packages in
+`$PYTHONUSERBASE/lib/pythonX.Y/site-packages/` (by default set to `$HOME/.local/lib/pythonX.Y/site-packages`).
 
 ### Using Conda Environments
 
