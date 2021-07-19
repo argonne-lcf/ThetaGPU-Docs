@@ -1,8 +1,8 @@
-# NVidia Container Notes
+# NVIDIA Container Notes
 
 ## Getting the container
 
-To get NVidia docker containers which have the latest CUDA and Tensorflow installed, go to [NVidia NGC](https://ngc.nvidia.com), create an account, search for `Tensorflow`. Notice there are containers tagged with `tf1` and `tf2`. The page tells you how to select the right one.
+To get NVIDIA docker containers which have the latest CUDA and TensorFlow installed, go to [NVIDIA NGC](https://ngc.nvidia.com), create an account, search for `TensorFlow`. Notice there are containers tagged with `tf1` and `tf2`. The page tells you how to select the right one.
 
 You can convert the command at the top, for instance:
 ```bash
@@ -45,7 +45,7 @@ Accuracy at step 9: 0.098
 
 The numbers may be different.
 
-## Running Tensorflow-2 with Horovod on ThetaGPU
+## Running TensorFlow-2 with Horovod on ThetaGPU
 
 To run on ThetaGPU with MPI you can do the follow test:
 

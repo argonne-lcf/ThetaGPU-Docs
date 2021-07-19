@@ -12,7 +12,7 @@ singularity build $OUTPUT_NAME $NVIDIA_CONTAINER_LOCATION
 where `$OUTPUT_NAME` is typically of the form `tf2_20.09-py3.simg` and `$NVIDIA_CONTAINER_LOCATION` can be a docker url such as `docker://nvcr.io/nvidia/tensorflow:20.09-tf2-py3`
 
 You can find the latest containers from Nvidia here:
-- [Tensorflow 1 and 2](https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow)
+- [TensorFlow 1 and 2](https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow)
 - [Pytorch](https://ngc.nvidia.com/catalog/containers/nvidia:pytorch)
 
 For your convienience, we've converted these containers to singularity and are available here:
