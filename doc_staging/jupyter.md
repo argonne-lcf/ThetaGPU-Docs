@@ -33,7 +33,7 @@ $ ssh -L $PORT_NUM:localhost:8888 username@theta.alcf.anl.gov
 
 See [TensorBoard](ml_frameworks/tensorflow/tensorboard_instructions.md) for similar instructions for connecting to a TensorBoard process running on a ThetaGPU compute node from your local machine. 
 
-### Default Conda Environment
+### Default Conda Environment 
 To use the default conda environment:
 ```bash
 (thetagpu21) $ module load conda
