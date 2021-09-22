@@ -14,7 +14,8 @@ Job routed to queue "full-node".
 Wait for job 10003623 to start...
 Opening interactive session to thetagpu21
 ```
-3. From the ThetaGPU compute node, start a `jupyter` notebook. (**Note:** This assumes you're in a suitable python environment containing `jupyter`, for more information on setting up a `conda` environment, see [Running Tensorflow with Conda](ml_frameworks/tensorflow/running_with_conda.md)):
+3. From the ThetaGPU compute node, start a `jupyter` notebook. (**Note:** This assumes you're in a suitable python environment containing `jupyter`. If your environment doesn't have one, for more information on setting up a `conda` environment, see [Running Tensorflow with Conda](ml_frameworks/tensorflow/running_with_conda.md). 
+The default `conda` module has the requisite jupyter environment. You can activate this using the following reference [Conda Environments](#default-conda-environment)
 ```bash
 (thetagpu21) $ jupyter notebook&
 ```
@@ -31,3 +32,10 @@ $ ssh -L $PORT_NUM:localhost:8888 username@theta.alcf.anl.gov
 
 
 See [TensorBoard](ml_frameworks/tensorflow/tensorboard_instructions.md) for similar instructions for connecting to a TensorBoard process running on a ThetaGPU compute node from your local machine. 
+
+### Default Conda Environment
+To use the default conda environment:
+```bash
+(thetagpu21) $ module load conda
+(thetagpu21) $ conda activate
+```
