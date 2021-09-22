@@ -2,12 +2,12 @@
 
 1. From a `thetalogin` node: `ssh thetagpusn1` to login to a ThetaGPU service node.
 2. From `thetagpusn1`, start an interactive job (make sure to note which ThetaGPU node the job gets routed to, `thetagpu21` in this example):
-You can start an interactive job using the following syntax. An example with the datascience allocation is provided next.
+You can start an interactive job using the following syntax. 
 ```bash
 (thetagpusn1) $ qsub -I -A <projectname> -n <number of nodes> -t <time> 
 Replace the <projectname> with your allocation name and specify the appropriate number of nodes and time.
 ```
-Here is a working example.
+Here is a working example using the datascience allocation with 1 node for an hour. Replace this with the appropriate project, number of nodes and time. 
 ```bash
 (thetagpusn1) $ qsub -I -A datascience -n 1 -t 01:00 
 Job routed to queue "full-node".
