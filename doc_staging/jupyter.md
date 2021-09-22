@@ -2,13 +2,19 @@
 
 1. From a `thetalogin` node: `ssh thetagpusn1` to login to a ThetaGPU service node.
 2. From `thetagpusn1`, start an interactive job (make sure to note which ThetaGPU node the job gets routed to, `thetagpu21` in this example):
+You can start an interactive job using the following syntax. An example with the datascience allocation is provided next.
 ```bash
-(thetagpusn1) $ qsub -I -A datascience -n 1 -t 01:00 --interactive
+(thetagpusn1) $ qsub -I -A <projectname> -n <number of nodes> -t <time> 
+Replace the <projectname> with your allocation name and specify the appropriate number of nodes and time.
+```
+Here is a working example.
+```bash
+(thetagpusn1) $ qsub -I -A datascience -n 1 -t 01:00 
 Job routed to queue "full-node".
 Wait for job 10003623 to start...
 Opening interactive session to thetagpu21
 ```
-3. From the ThetaGPU compute node, start a `jupyter` notebook. (**Note:** This assumes you're in a suitable python environment containing `jupyter`, for more information on setting up a `conda` environment, see [Running Tensorflow with Conda](https://argonne-lcf.github.io/ThetaGPU-Docs/ml_frameworks/tensorflow/running_with_conda/)):
+3. From the ThetaGPU compute node, start a `jupyter` notebook. (**Note:** This assumes you're in a suitable python environment containing `jupyter`, for more information on setting up a `conda` environment, see [Running Tensorflow with Conda](https://argonne-lcf.github.io/ThetaGPU-Docs/ml_frameworks/tensorflow/running_with_conda.html)):
 ```bash
 (thetagpu21) $ jupyter notebook&
 ```
