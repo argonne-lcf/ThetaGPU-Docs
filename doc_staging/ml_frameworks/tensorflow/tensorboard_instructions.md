@@ -1,6 +1,7 @@
 # TensorBoard Instructions
 
-After you have logged into ThetaGPU, and have a TensorFlow run going on a compute node, 
+After you have logged into ThetaGPU, and have a TensorFlow run going on a compute node
+(e.g. where you have an interactive allocation running via `qsub  -q <queue> -A <allocation> -t <time> -I`),
 you'll need to know the identity of one of your worker nodes (`thetagpunNN`) so you can
 SSH to it.
 
@@ -26,6 +27,8 @@ ssh thetagpuNN
 # for instance run the conda setup.sh script created during the install_tensorflow.sh script
 
 # now run tensorboard
+module load conda/tensorflow
+conda activate
 tensorboard --logdir </path/to/logs> --port $PORT3 --bind_all
 ```
 
