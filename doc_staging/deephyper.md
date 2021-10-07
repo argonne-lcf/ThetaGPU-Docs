@@ -4,7 +4,13 @@ For more details refer to the [DeepHyper documentation](https://deephyper.readth
 
 ## Installation
 
-The installation procedure of DeepHyper on ThetaGPU can be found on the official documentation of the software ["Installing DeepHyper on ThetaGPU](https://deephyper.readthedocs.io/en/latest/install/thetagpu.html).
+A recent installation of DeepHyper is available in the following shared Anaconda environment:
+```bash
+module load conda/2021-09-22
+conda activate
+```
+
+The installation procedure of DeepHyper on ThetaGPU can be found on the official documentation of the software ["Installing DeepHyper on ThetaGPU"](https://deephyper.readthedocs.io/en/latest/install/thetagpu.html).
 
 ## Example
 
