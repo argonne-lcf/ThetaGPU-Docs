@@ -27,8 +27,8 @@ Next time you log in, you'll have to start the container, and then run `source $
 
 You'll notice right away when you try to `pip` install you can not, because the connection fails.  You can, however, go through a proxy server for pip by enabling these variables:
 ```bash
-export http_proxy=http://theta-proxy.tmi.alcf.anl.gov:3128 
-export https_proxy=https://theta-proxy.tmi.alcf.anl.gov:3128
+export http_proxy=http://proxy.tmi.alcf.anl.gov:3128
+export https_proxy=http://proxy.tmi.alcf.anl.gov:3128
 ```
 
 Now, you can pip install your favorite packages:
