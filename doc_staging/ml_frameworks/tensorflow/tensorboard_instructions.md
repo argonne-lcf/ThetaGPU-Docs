@@ -32,4 +32,4 @@ conda activate
 tensorboard --logdir </path/to/logs> --port $PORT3 --bind_all
 ```
 
-Now, direct your browser on your local machine to `http://localhost:$PORT1/`.
+Now, direct your browser on your local machine to `http://localhost:$PORT0/`.
